@@ -23,6 +23,7 @@ Ergebnis: **PARP1**, gestützt durch Mensch und Maus, nicht essentiell. Das ist 
 | Pfad | Inhalt |
 |---|---|
 | `docs/Dokumentation.pdf` / `.md` | Projektdokumentation (Annahmen, Entscheidungen, Import, Abfragen, Einschränkungen) |
+| `docs/ERD-Erklaerung.pdf` / `.md` | Spickzettel zur Präsentation: ERD lesen, die vier Bereiche, BRCA1-Beispiel, wahrscheinliche Fragen |
 | `docs/erd.png` / `.svg` / `.dot` | ER-Diagramm in Crow's-Foot-Notation (Graphviz) |
 | `docs/ERD.md` | ER-Diagramm als Mermaid (wird auf GitHub gerendert) und offene Fragen |
 | `sql/schema.sql` | Tabellen, Schlüssel, Constraints, Indizes |
