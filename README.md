@@ -7,6 +7,15 @@ Ziel: synthetisch letale (SL) Genpaare aus Modellorganismen über Orthologie auf
 
 **ERD (Whiteboard):** https://claude.ai/artifact/PZif19EJMd9ke5vmfKWYuL
 
+## Repo-Inhalt
+
+| Pfad | Inhalt |
+|---|---|
+| `data/` | Rohdaten von BioGRID, OMA und SNAP (siehe unten) |
+| `docs/ERD.md` | ER-Diagramm (Mermaid, wird auf GitHub gerendert), Modellierungsentscheidungen, offene Fragen |
+| `sql/schema.sql` | Schema-Entwurf für PostgreSQL, getestet mit PostgreSQL 16 |
+| `scripts/check_coverage.py` | Prüft die ID-Abdeckung zwischen den Datensätzen (`python3 scripts/check_coverage.py`) |
+
 ## Daten (`data/`)
 
 Die großen BioGRID-Dateien liegen gzip-komprimiert im Repo, weil GitHub Dateien über 100 MB ablehnt. Entpacken mit:
