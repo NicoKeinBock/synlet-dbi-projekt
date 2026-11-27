@@ -7,14 +7,31 @@ Ziel: synthetisch letale (SL) Genpaare aus Modellorganismen über Orthologie auf
 
 **ERD (Whiteboard):** https://claude.ai/artifact/PZif19EJMd9ke5vmfKWYuL
 
+## Schnellstart
+
+```bash
+python3 scripts/prepare_import.py          # Rohdaten -> build/*.csv (ca. 40 s)
+createdb synlet
+psql -d synlet -f sql/schema.sql -f sql/import.sql -f sql/procedures.sql
+psql -d synlet -c "SELECT * FROM sl_candidates('BRCA1');"
+```
+
+Ergebnis: **PARP1**, gestützt durch Mensch und Maus, nicht essentiell. Das ist das klassische SL-Paar hinter den PARP-Hemmern.
+
 ## Repo-Inhalt
 
 | Pfad | Inhalt |
 |---|---|
-| `data/` | Rohdaten von BioGRID, OMA und SNAP (siehe unten) |
-| `docs/ERD.md` | ER-Diagramm (Mermaid, wird auf GitHub gerendert), Modellierungsentscheidungen, offene Fragen |
-| `sql/schema.sql` | Schema-Entwurf für PostgreSQL, getestet mit PostgreSQL 16 |
-| `scripts/check_coverage.py` | Prüft die ID-Abdeckung zwischen den Datensätzen (`python3 scripts/check_coverage.py`) |
+| `docs/Dokumentation.pdf` / `.md` | Projektdokumentation (Annahmen, Entscheidungen, Import, Abfragen, Einschränkungen) |
+| `docs/erd.png` / `.svg` / `.dot` | ER-Diagramm in Crow's-Foot-Notation (Graphviz) |
+| `docs/ERD.md` | ER-Diagramm als Mermaid (wird auf GitHub gerendert) und offene Fragen |
+| `sql/schema.sql` | Tabellen, Schlüssel, Constraints, Indizes |
+| `sql/import.sql` | Lädt `build/*.csv` mit `\copy` |
+| `sql/procedures.sql` | Views und Funktionen: `sl_candidates`, `sl_partners`, `orthologs_of`, `find_human_gene` |
+| `sql/queries.sql` | 12 Analyse-Abfragen |
+| `scripts/prepare_import.py` | Bereitet die Rohdaten auf (nur Python-Standardbibliothek) |
+| `scripts/check_coverage.py` | Prüft die ID-Abdeckung zwischen den Datensätzen |
+| `data/` | Rohdaten von BioGRID, OMA und SNAP |
 
 ## Daten (`data/`)
 

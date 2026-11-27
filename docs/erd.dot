@@ -1,0 +1,114 @@
+// SynLet ERD (Crow's-Foot-Notation). Rendern: dot -Tpng -Gdpi=150 docs/erd.dot -o docs/erd.png
+digraph SynLet {
+    graph [rankdir=LR, splines=spline, nodesep=0.45, ranksep=0.9, fontname="Helvetica", pad=0.3];
+    node  [shape=plain, fontname="Helvetica", fontsize=11];
+    edge  [dir=both, arrowtail=teetee, arrowhead=crowodot, color="#444444", fontname="Helvetica", fontsize=9];
+
+    subgraph cluster_biogrid { label="BioGRID – Synthetic Lethality"; style="rounded,filled"; fillcolor="#e8f0fb"; color="#9db7e0"; fontsize=13;
+        ONTOLOGY_TERM; INTERACTION_PHENOTYPE; EXPERIMENTAL_SYSTEM; INTERACTION; DATA_SOURCE; PUBLICATION; }
+    subgraph cluster_core { label="Gemeinsame Basis"; style="rounded,filled"; fillcolor="#f4f4f4"; color="#bbbbbb"; fontsize=13;
+        ORGANISM; GENE; GENE_SYNONYM; GENE_ACCESSION; }
+    subgraph cluster_oma { label="OMA – Orthologie"; style="rounded,filled"; fillcolor="#e7f5ea"; color="#9cd0a8"; fontsize=13;
+        OMA_PROTEIN; ORTHOLOGY; }
+    subgraph cluster_snap { label="SNAP – Essentiality"; style="rounded,filled"; fillcolor="#fdeee3"; color="#efbf9c"; fontsize=13;
+        ESSENTIALITY; ESSENTIALITY_EVIDENCE; }
+
+    ORGANISM [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>ORGANISM</b></td></tr>
+        <tr><td>PK</td><td align="left">tax_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">scientific_name</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">common_name</td><td align="left">VARCHAR</td></tr>
+        <tr><td>UK</td><td align="left">oma_code</td><td align="left">VARCHAR</td></tr></table>>];
+    GENE [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>GENE</b></td></tr>
+        <tr><td>PK</td><td align="left">entrez_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">tax_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>UK</td><td align="left">biogrid_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">official_symbol</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">systematic_name</td><td align="left">VARCHAR</td></tr></table>>];
+    GENE_SYNONYM [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>GENE_SYNONYM</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">entrez_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>PK</td><td align="left">synonym</td><td align="left">VARCHAR</td></tr></table>>];
+    GENE_ACCESSION [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>GENE_ACCESSION</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">entrez_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>PK</td><td align="left">accession</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">acc_type</td><td align="left">VARCHAR</td></tr></table>>];
+    INTERACTION [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>INTERACTION</b></td></tr>
+        <tr><td>PK</td><td align="left">interaction_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">gene_a_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">gene_b_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">system_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">pubmed_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">source_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">throughput</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">score</td><td align="left">DECIMAL</td></tr>
+        <tr><td></td><td align="left">qualifications</td><td align="left">TEXT</td></tr>
+        <tr><td></td><td align="left">source_database</td><td align="left">VARCHAR</td></tr></table>>];
+    EXPERIMENTAL_SYSTEM [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>EXPERIMENTAL_SYSTEM</b></td></tr>
+        <tr><td>PK</td><td align="left">system_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">name</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">system_type</td><td align="left">VARCHAR</td></tr>
+        <tr><td>UK</td><td align="left">psi_mi_code</td><td align="left">VARCHAR</td></tr></table>>];
+    PUBLICATION [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>PUBLICATION</b></td></tr>
+        <tr><td>PK</td><td align="left">pubmed_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">first_author</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">pub_year</td><td align="left">INTEGER</td></tr></table>>];
+    DATA_SOURCE [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>DATA_SOURCE</b></td></tr>
+        <tr><td>PK</td><td align="left">source_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">name</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">release</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">file_name</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">download_date</td><td align="left">DATE</td></tr></table>>];
+    ONTOLOGY_TERM [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>ONTOLOGY_TERM</b></td></tr>
+        <tr><td>PK</td><td align="left">term_id</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">name</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">category</td><td align="left">VARCHAR</td></tr></table>>];
+    INTERACTION_PHENOTYPE [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>INTERACTION_PHENOTYPE</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">interaction_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>PK/FK</td><td align="left">term_id</td><td align="left">VARCHAR</td></tr></table>>];
+    OMA_PROTEIN [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>OMA_PROTEIN</b></td></tr>
+        <tr><td>PK</td><td align="left">oma_id</td><td align="left">VARCHAR</td></tr>
+        <tr><td>FK</td><td align="left">tax_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>FK</td><td align="left">entrez_id (optional)</td><td align="left">INTEGER</td></tr></table>>];
+    ORTHOLOGY [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>ORTHOLOGY</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">oma_id_1 (Mensch)</td><td align="left">VARCHAR</td></tr>
+        <tr><td>PK/FK</td><td align="left">oma_id_2 (Maus/Hefe)</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">rel_type</td><td align="left">VARCHAR</td></tr>
+        <tr><td></td><td align="left">oma_group</td><td align="left">INTEGER</td></tr></table>>];
+    ESSENTIALITY [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>ESSENTIALITY</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">entrez_id</td><td align="left">INTEGER</td></tr>
+        <tr><td></td><td align="left">is_essential</td><td align="left">BOOLEAN</td></tr></table>>];
+    ESSENTIALITY_EVIDENCE [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4" bgcolor="white">
+        <tr><td colspan="3" bgcolor="#dddddd"><b>ESSENTIALITY_EVIDENCE</b></td></tr>
+        <tr><td>PK/FK</td><td align="left">entrez_id</td><td align="left">INTEGER</td></tr>
+        <tr><td>PK/FK</td><td align="left">pubmed_id</td><td align="left">INTEGER</td></tr></table>>];
+
+    ORGANISM -> GENE;
+    ORGANISM -> OMA_PROTEIN;
+    GENE -> GENE_SYNONYM;
+    GENE -> GENE_ACCESSION;
+    GENE -> INTERACTION [xlabel="Gen A"];
+    GENE -> INTERACTION [xlabel="Gen B"];
+    GENE -> OMA_PROTEIN [arrowtail=teeodot];
+    GENE -> ESSENTIALITY [arrowhead=teeodot];
+    EXPERIMENTAL_SYSTEM -> INTERACTION;
+    PUBLICATION -> INTERACTION [arrowtail=teeodot];
+    DATA_SOURCE -> INTERACTION;
+    INTERACTION -> INTERACTION_PHENOTYPE;
+    ONTOLOGY_TERM -> INTERACTION_PHENOTYPE;
+    OMA_PROTEIN -> ORTHOLOGY [xlabel="Protein 1"];
+    OMA_PROTEIN -> ORTHOLOGY [xlabel="Protein 2"];
+    ESSENTIALITY -> ESSENTIALITY_EVIDENCE;
+    PUBLICATION -> ESSENTIALITY_EVIDENCE;
+}

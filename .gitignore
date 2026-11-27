@@ -1,3 +1,6 @@
-# Entpackte Rohdaten nicht committen
+# Entpackte Rohdaten und generierte Dateien nicht committen
 data/synlethality/*.txt
+build/
+*.zip
 .DS_Store
+__pycache__/
