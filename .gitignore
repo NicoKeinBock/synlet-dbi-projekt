@@ -1,0 +1,3 @@
+# Entpackte Rohdaten nicht committen
+data/synlethality/*.txt
+.DS_Store
